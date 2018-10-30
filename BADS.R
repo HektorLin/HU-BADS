@@ -8,6 +8,8 @@ sqrt(a*b)
 log2(a)
 sqrt(3*4.5)
 
+
+
 # HW1 Ex 2
 m.A = matrix(c(1:9), nrow=3, byrow=TRUE)
 m.A[3,3] = m.A[3,3] + 1 #may try direct input value with 
@@ -23,19 +25,45 @@ m.B
 m.Beta = solve(t(m.A)%*%m.A)%*%t(m.A)%*%v.y
 m.Beta
 
+
+
 # HW2 Statistical analysis
 setwd("C:/Users/Hector Lin/Documents/HU-courses-practice/BADS")
 Loan_Data = read.csv2("Loan_Data.csv")
+
+# 1. Create two variables, inc.good and inc.bad, 
+# which contain the incomes of good and bad credit risks, respectively
 # from dicttionary for BAD 1=bad, 0=good
-# subset function!!!
-summary(Loan_Data)
+# IMPORTANT: subset function!!!
 temp1 = as.data.frame(subset(Loan_Data, as.numeric(as.character(Loan_Data$BAD)) == 1))
 temp1$dINC_A = as.character(temp1$dINC_A)
 inc.bad = as.numeric(temp1$dINC_A)
-
 temp2 = as.data.frame(subset(Loan_Data, as.numeric(as.character(Loan_Data$BAD)) != 1))
 temp2$dINC_A = as.character(temp2$dINC_A)
 inc.good = as.numeric(temp2$dINC_A)
 
-boxplot(inc.good,inc.bad)
+# 2. Depict the distribution of the income of customers with a good and bad risk,
+# respectively, by means of a boxplot.
+boxplot(inc.good,inc.bad, names = c("Good","Bad"),
+                          main = "Income distribution of credit applications",
+                          ylab = "Applicants income [$]")
 
+# 3.  Calculate the difference between 
+# the average/mean income of good and bad credit applicants.
+difference = mean(inc.good) - mean(inc.bad)
+print(difference)
+hist(inc.good)
+hist(inc.bad)
+
+# 4. Identify an appropriate statistical test to verify 
+# whether the observed income difference is statistically significant. 
+# Perform the test and display its results.
+GBtest = t.test(inc.good,inc.bad)
+print(GBtest)
+
+# 5. Assign the test result to a variable. 
+# Use the print() function to output a message that tells the user
+# whether the observed income difference is significant.
+if(GBtest$p.value < 0.01) { 
+    print("Significant") 
+    }
