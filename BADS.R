@@ -29,18 +29,21 @@ m.Beta
 
 # HW2 Statistical analysis
 setwd("C:/Users/Hector Lin/Documents/HU-courses-practice/BADS")
-Loan_Data = read.csv2("Loan_Data.csv")
+Loan_Data = read.csv("Loan_Data.csv",  sep = ";")
 
 # 1. Create two variables, inc.good and inc.bad, 
 # which contain the incomes of good and bad credit risks, respectively
 # from dicttionary for BAD 1=bad, 0=good
 # IMPORTANT: subset function!!!
-temp1 = as.data.frame(subset(Loan_Data, as.numeric(as.character(Loan_Data$BAD)) == 1))
-temp1$dINC_A = as.character(temp1$dINC_A)
-inc.bad = as.numeric(temp1$dINC_A)
-temp2 = as.data.frame(subset(Loan_Data, as.numeric(as.character(Loan_Data$BAD)) != 1))
-temp2$dINC_A = as.character(temp2$dINC_A)
-inc.good = as.numeric(temp2$dINC_A)
+#temp1 = as.data.frame(subset(Loan_Data, as.numeric(as.character(Loan_Data$BAD)) == 1))
+#temp1$dINC_A = as.character(temp1$dINC_A)
+#inc.bad = as.numeric(temp1$dINC_A)
+#temp2 = as.data.frame(subset(Loan_Data, as.numeric(as.character(Loan_Data$BAD)) != 1))
+#temp2$dINC_A = as.character(temp2$dINC_A)
+#inc.good = as.numeric(temp2$dINC_A)
+inc.bad = Loan_Data$dINC_A[Loan_Data$BAD == 1]
+inc.good = Loan_Data$dINC_A[Loan_Data$BAD != 1]
+
 
 # 2. Depict the distribution of the income of customers with a good and bad risk,
 # respectively, by means of a boxplot.
@@ -67,3 +70,15 @@ print(GBtest)
 if(GBtest$p.value < 0.01) { 
     print("Significant") 
     }
+
+
+
+# HW3
+# some helpful visualizations
+# install.packages("ggplot2")
+library("ggplot2")
+qplot(data = Loan_Data, x=dINC_A, y=dINC_SP, color=BAD)
+ggplot(data = Loan_Data, aes(x=dINC_A, y=dINC_SP, color = BAD)) + geom_count(alpha=0.5)
+
+
+
