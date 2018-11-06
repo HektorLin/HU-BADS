@@ -80,5 +80,31 @@ library("ggplot2")
 qplot(data = Loan_Data, x=dINC_A, y=dINC_SP, color=BAD)
 ggplot(data = Loan_Data, aes(x=dINC_A, y=dINC_SP, color = BAD)) + geom_count(alpha=0.5)
 
+#install.packages("psych")
+library("sp")
+library("psych")
+
+# the one w/ red wine data
+wine <- read.csv(url("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"),header=TRUE, sep=";")
+summary(wine)
+head(wine)
+describe(wine)
+ggplot(data = wine, aes(x = alcohol, y = quality)) + geom_point()
+#install.packages('gpairs')
+library( gpairs )
+gpairs(wine [,-12])
+
+install.packages('corrplot')
+library ( corrplot )
+corrplot(cor( wine[,1:11]))
+corrplot.mixed(cor( wine[,1:11]) , upper ="ellipse")
+
+lr1 <- lm(quality ~volatile.acidity+alcohol, data = wine)
+summary(lr1)
+
+# random sampling from data set
+wine_sample = wine[sample(nrow(wine),500),] # THINK: why a "," at the end?
+
+lr2 <- lm(quality ~volatile.acidity+alcohol, data = wine_sample)
 
 
