@@ -1,9 +1,10 @@
-# Data and path
-setwd("C:/Users/Hector Lin/Documents/HU-courses-practice/PMP")
-FX_data = read.csv("FX.csv",  sep = ";")
-
 # Library
+#install.packages("RCurl")
+library("RCurl")
 
+# Data and path
+#setwd("C:/Users/Hector Lin/Documents/HU-courses-practice/PMP")
+FX_data = read.csv(text=getURL("https://raw.githubusercontent.com/HektorLin/HU-courses-practice/master/PMP/FX.csv"),sep = ";")
 
 # Declaring global variables
 No_of_FX_clusters = 3
@@ -11,6 +12,7 @@ Sampling_months = 24
 
 # Clearing, and partitioning data
 FX_data$EURHKD = NULL
+set.seed(as.numeric(Sys.time()))
 x = sample(c(1:(nrow(FX_data)-Sampling_months)),1)
 FX_data_sample = FX_data[x:(x+Sampling_months),]
 rm(x)
@@ -27,3 +29,4 @@ print(paste(FX_data_sample[1,1], " to " , FX_data_sample[nrow(FX_data_sample),1]
 for (i in 1:No_of_FX_clusters) {
   print (FX_cluster[FX_cluster == i])
 }
+
