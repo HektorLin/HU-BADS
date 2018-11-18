@@ -47,5 +47,5 @@ PMP_FX_cluster = function (a,b, m) {
   }
   return(same_cluster_count/m)
 }
-trial1 = PMP_FX_cluster("EURUSD","EURMXN",20)
+trial1 = PMP_FX_cluster("EURUSD","EURGBP",20)
 print(trial1)
