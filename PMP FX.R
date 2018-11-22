@@ -3,12 +3,11 @@
 library("RCurl")
 
 # Data and path
-#setwd("C:/Users/Hector Lin/Documents/HU-courses-practice/PMP")
 FX_data = read.csv(text=getURL("https://raw.githubusercontent.com/HektorLin/HU-courses-practice/master/PMP/FX.csv"),sep = ";")
 
 # Declaring global variables
-No_of_FX_clusters = 2
-Sampling_months = 24
+No_of_FX_clusters = 3
+Sampling_months = 12
 
 # Clearing, and partitioning data
 FX_data$EURHKD = NULL
@@ -24,7 +23,8 @@ FX_clustering = kmeans(corMx, centers = No_of_FX_clusters, iter.max = 50, nstart
 FX_cluster = FX_clustering$cluster
 
 # Direct result output
-print(paste(FX_data_sample[1,1], " to " , FX_data_sample[nrow(FX_data_sample),1]))
+# print out sampled period
+print(paste("Sample period" ,FX_data_sample[1,1], " to " , FX_data_sample[nrow(FX_data_sample),1]))
 for (i in 1:No_of_FX_clusters) {
   print (FX_cluster[FX_cluster == i])
 }
@@ -47,5 +47,23 @@ PMP_FX_cluster = function (a,b, m) {
   }
   return(same_cluster_count/m)
 }
-trial1 = PMP_FX_cluster("EURUSD","EURGBP",20)
+trial1 = PMP_FX_cluster("EURINR","EURCNH",20)
 print(trial1)
+rm(z)
+z = list()
+
+# takes about 1 min to run
+for (i in 2:ncol(FX_data)) {
+  for (j in 2:ncol(FX_data)) {
+    if (i < j) {
+      x = PMP_FX_cluster(colnames(FX_data)[i],colnames(FX_data)[j],50)
+      print(paste("probability of  ", colnames(FX_data)[i], "  and  ", colnames(FX_data)[j], "  in the same cluster for = ", x))
+      z = rbind(z, c(colnames(FX_data)[i],colnames(FX_data)[j], x))
+    }
+  }
+}
+
+write.csv(z, file = "FX clustering output.csv")
+
+
+
